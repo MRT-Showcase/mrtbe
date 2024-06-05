@@ -14,3 +14,9 @@ router.get('auth/user', [UserController, 'getUser']).use(
 router.post('auth/register', [UserController, 'register'])
 router.post('auth/login/pin', [UserController, 'login'])
 router.post('auth/validate', [UserController, 'validatePhoneNumber'])
+router.get('auth/login/google', [UserController, 'loginByGoogle'])
+router.get('auth/create-pin', [UserController, 'createPin']).use(
+  middleware.auth({
+    guards: ['api'],
+  })
+)

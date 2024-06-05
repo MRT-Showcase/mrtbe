@@ -48,4 +48,34 @@ export default class AuthenticationService {
     }
     return user
   }
+
+  async loginWithGoogle({ firebaseId }: { firebaseId: string }) {
+    try {
+      let user = await User.findBy('firebaseId', firebaseId)
+      if (!user) {
+        let newUser = new User()
+        newUser.firebaseId = firebaseId
+        await newUser.save()
+        return newUser
+      }
+      return user
+    } catch (error) {
+      throw new BadRequestErrorException('Invalid credentials')
+    }
+  }
+
+  async createPin({ userId, pin }: { userId: string; pin: string }) {
+    let user = await User.find(userId)
+    if (!user) {
+      throw new NotFoundErrorException('User not found')
+    }
+
+    if (user.pin) {
+      throw new BadRequestErrorException('User already has a pin')
+    }
+
+    user.pin = pin
+    await user.save()
+    return user
+  }
 }

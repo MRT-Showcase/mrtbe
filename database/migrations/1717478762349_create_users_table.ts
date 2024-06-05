@@ -7,9 +7,9 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.string('id').notNullable().primary()
       table.string('full_name').nullable()
-      table.string('phone_number', 254).notNullable().unique()
-      table.string('pin').notNullable()
-
+      table.string('phone_number', 254).unique()
+      table.string('pin')
+      table.string('firebase_id').unique()
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
     })

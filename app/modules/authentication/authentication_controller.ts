@@ -7,6 +7,9 @@ import { registerDTO } from './dto/register_dto.js'
 import { loginDTO } from './dto/login_dto.js'
 import User from '#models/user'
 import UnauthorizedException from '#exceptions/unauthorized_exception'
+import { loginGoogleDto } from '#authentication/dto/login_google_dto'
+import { createPinDto } from '#authentication/dto/create_pin_dto'
+import BadRequestErrorException from '#exceptions/bad_request_error_exception'
 
 @inject()
 export default class AuthenticationController {
@@ -78,6 +81,43 @@ export default class AuthenticationController {
     return new DefaultResponseBuilder<typeof user>()
       .setData(user)
       .setMessage('Successfully fetched user')
+      .setSuccess(true)
+      .setStatusCode(200)
+      .build()
+  }
+
+  async loginByGoogle({ request }: HttpContext) {
+    let payload = await request.validateUsing(loginGoogleDto)
+    let user = await this.authenticationService.loginWithGoogle({
+      firebaseId: payload.firebaseId,
+    })
+    return new DefaultResponseBuilder<User>()
+      .setData(user)
+      .setMessage('Successfully logged in with google')
+      .setSuccess(true)
+      .setStatusCode(200)
+      .build()
+  }
+
+  async createPin({ request, auth }: HttpContext) {
+    if (!auth.isAuthenticated) {
+      return new UnauthorizedException('Unauthorized')
+    }
+    let user = auth.getUserOrFail()
+
+    if (!user.firebaseId) {
+      return new BadRequestErrorException('You must be logged in with google')
+    }
+
+    let payload = await request.validateUsing(createPinDto)
+    let returnedUser = await this.authenticationService.createPin({
+      userId: user.id,
+      pin: payload.pin,
+    })
+
+    return new DefaultResponseBuilder<typeof returnedUser>()
+      .setData(returnedUser)
+      .setMessage('Successfully created pin')
       .setSuccess(true)
       .setStatusCode(200)
       .build()

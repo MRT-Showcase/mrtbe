@@ -20,8 +20,11 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare phoneNumber: string
 
+  @column()
+  declare firebaseId: string | null
+
   @column({ serializeAs: null })
-  declare pin: string
+  declare pin: string | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
