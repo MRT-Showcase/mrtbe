@@ -19,6 +19,7 @@
     "#models/*": "./app/models/*.js",
     "#exceptions/*": "./app/exceptions/*.js",
     "#authentication/*": "./app/modules/authentication/*.js",
+    "#word/*": "./app/modules/word/*.js",
     "#mails/*": "./app/mails/*.js",
     "#services/*": "./app/services/*.js",
     "#listeners/*": "./app/listeners/*.js",
@@ -59,6 +60,7 @@
     "@adonisjs/lucid": "^20.6.0",
     "@vinejs/vine": "^2.1.0",
     "luxon": "^3.4.4",
+    "openai": "^4.48.1",
     "pg": "^8.11.5",
     "reflect-metadata": "^0.2.2"
   },

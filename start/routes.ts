@@ -1,7 +1,9 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
+import { cuid } from '@adonisjs/core/helpers'
 
 const UserController = () => import('#authentication/authentication_controller')
+const WordController = () => import('#word/word_controller')
 
 /*
 User Routes
@@ -20,3 +22,20 @@ router.get('auth/create-pin', [UserController, 'createPin']).use(
     guards: ['api'],
   })
 )
+/*
+End of user routes
+ */
+
+router.get('/cuid', async () => {
+  return cuid()
+})
+
+/*
+Start of Synonym routes
+ */
+
+router.post('/synonyms', [WordController, 'getSynonyms'])
+
+/*
+End of Synonym routes
+ */
