@@ -94,12 +94,18 @@ export default class AuthenticationService {
   async validateEmail({ email, phoneNumber }: { email: string; phoneNumber: string }) {
     let user = await User.findBy('phoneNumber', phoneNumber)
     if (user) {
-      return true
+      return {
+        isUserAlreadyExists: true,
+        message: 'Kamu sudah register, silahkan login',
+      }
     }
 
     let userWithEmail = await User.findBy('email', email)
     if (userWithEmail) {
-      return true
+      return {
+        isUserAlreadyExists: false,
+        message: 'Email sudah pernah digunakan, silahkan gunakan email lain',
+      }
     }
 
     return false
