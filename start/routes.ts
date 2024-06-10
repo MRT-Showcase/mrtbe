@@ -23,6 +23,7 @@ router.get('auth/create-pin', [UserController, 'createPin']).use(
     guards: ['api'],
   })
 )
+router.post('auth/validate-user', [UserController, 'validateEmailAndPhoneNumber'])
 /*
 End of user routes
  */

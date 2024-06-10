@@ -8,3 +8,10 @@ export const registerDTO = vine.compile(
     email: vine.string().trim().email(),
   })
 )
+
+export const validateEmailAndPhoneNumber = vine.compile(
+  vine.object({
+    phoneNumber: vine.string().trim().mobile(),
+    email: vine.string().trim().email(),
+  })
+)

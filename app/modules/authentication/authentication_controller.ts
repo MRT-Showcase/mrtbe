@@ -3,7 +3,7 @@ import AuthenticationService from './authentication_service.js'
 import { HttpContext } from '@adonisjs/core/http'
 import { verifyNumberDTO } from './dto/verify_phone_number_dto.js'
 import DefaultResponseBuilder from '#utils/default_response_builder'
-import { registerDTO } from './dto/register_dto.js'
+import { registerDTO, validateEmailAndPhoneNumber } from './dto/register_dto.js'
 import { loginDTO } from './dto/login_dto.js'
 import User from '#models/user'
 import UnauthorizedException from '#exceptions/unauthorized_exception'
@@ -120,6 +120,23 @@ export default class AuthenticationController {
     return new DefaultResponseBuilder<typeof returnedUser>()
       .setData(returnedUser)
       .setMessage('Successfully created pin')
+      .setSuccess(true)
+      .setStatusCode(200)
+      .build()
+  }
+
+  async validateEmailAndPhoneNumber({ request }: HttpContext) {
+    let payload = await request.validateUsing(validateEmailAndPhoneNumber)
+    let isValid = await this.authenticationService.validateEmail({
+      email: payload.email,
+      phoneNumber: payload.phoneNumber,
+    })
+    let response = {
+      isUserAlreadyExists: isValid,
+    }
+    return new DefaultResponseBuilder<typeof response>()
+      .setData(response)
+      .setMessage('Successfully validated email')
       .setSuccess(true)
       .setStatusCode(200)
       .build()

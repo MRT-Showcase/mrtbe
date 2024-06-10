@@ -90,4 +90,18 @@ export default class AuthenticationService {
     await user.save()
     return user
   }
+
+  async validateEmail({ email, phoneNumber }: { email: string; phoneNumber: string }) {
+    let user = await User.findBy('phoneNumber', phoneNumber)
+    if (user) {
+      return true
+    }
+
+    let userWithEmail = await User.findBy('email', email)
+    if (userWithEmail) {
+      return true
+    }
+
+    return false
+  }
 }
