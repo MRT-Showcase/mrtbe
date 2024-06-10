@@ -131,11 +131,8 @@ export default class AuthenticationController {
       email: payload.email,
       phoneNumber: payload.phoneNumber,
     })
-    let response = {
-      isUserAlreadyExists: isValid,
-    }
-    return new DefaultResponseBuilder<typeof response>()
-      .setData(response)
+    return new DefaultResponseBuilder<typeof isValid>()
+      .setData(isValid)
       .setMessage('Successfully validated email')
       .setSuccess(true)
       .setStatusCode(200)
