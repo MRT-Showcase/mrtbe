@@ -1,6 +1,7 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 import { cuid } from '@adonisjs/core/helpers'
+import { throttle } from '#start/limiter'
 
 const UserController = () => import('#authentication/authentication_controller')
 const WordController = () => import('#word/word_controller')
@@ -34,7 +35,7 @@ router.get('/cuid', async () => {
 Start of Synonym routes
  */
 
-router.post('/synonyms', [WordController, 'getSynonyms'])
+router.post('/synonyms', [WordController, 'getSynonyms']).use(throttle)
 
 /*
 End of Synonym routes
