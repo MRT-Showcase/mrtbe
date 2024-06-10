@@ -6,7 +6,8 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.string('id').notNullable().primary()
-      table.string('full_name').nullable()
+      table.string('full_name').notNullable()
+      table.string('email').notNullable().unique()
       table.string('phone_number', 254).unique()
       table.string('pin')
       table.string('firebase_id').unique()

@@ -15,19 +15,31 @@ export default class AuthenticationService {
   async registerPhoneNumber({
     phoneNumber,
     pin,
+    email,
+    fullName,
   }: {
     phoneNumber: string
     pin: string
+    email: string
+    fullName: string
   }): Promise<User> {
     let user = await User.findBy('phoneNumber', phoneNumber)
     if (user) {
       throw new BadRequestErrorException('User already exists')
     }
+
+    let emailExists = await User.findBy('email', email)
+    if (emailExists) {
+      throw new BadRequestErrorException('Email already exists')
+    }
+
     let id = cuid()
     let newUser = new User()
     newUser.id = id
     newUser.phoneNumber = phoneNumber
     newUser.pin = pin
+    newUser.email = email
+    newUser.fullName = fullName
     await newUser.save()
     return newUser
   }

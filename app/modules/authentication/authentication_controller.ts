@@ -64,6 +64,8 @@ export default class AuthenticationController {
     let user = await this.authenticationService.registerPhoneNumber({
       phoneNumber: payload.phoneNumber,
       pin: payload.pin,
+      email: payload.email,
+      fullName: payload.fullName,
     })
     return new DefaultResponseBuilder<User>()
       .setData(user)
